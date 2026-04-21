@@ -2,15 +2,11 @@ export type ProcedureType = 'gastroskopi' | 'koloskopi';
 
 export type SpecimenType =
   | 'Biopsi'
-  | 'Polypektomi'
-  | 'EMR'
-  | 'Piecemeal polypektomi';
+  | 'Polypektomi';
 
 export type PolypMorphology =
-  | 'Sessil'
-  | 'Pedunkulerad'
-  | 'Flat/plan'
-  | 'Serrated';
+  | 'SSL'
+  | 'Adenom';
 
 export interface PolypDescription {
   morphology: PolypMorphology;

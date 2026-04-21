@@ -38,8 +38,8 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Hiatus hernia',
     'Barrett-esofagus',
     'Gastrit',
-    'Gastrisk ulcus',
-    'Duodenal ulcus',
+    'Ventrikelulcus',
+    'Duodenalulcus',
     'Erosioner',
     'Polyp',
     'Tumör',
@@ -174,15 +174,11 @@ export const PROCEDURE_LABELS: Record<ProcedureType, string> = {
 export const SPECIMEN_TYPES: SpecimenType[] = [
   'Biopsi',
   'Polypektomi',
-  'EMR',
-  'Piecemeal polypektomi',
 ];
 
 export const POLYP_MORPHOLOGIES: PolypMorphology[] = [
-  'Sessil',
-  'Pedunkulerad',
-  'Flat/plan',
-  'Serrated',
+  'SSL',
+  'Adenom',
 ];
 
 export const COMMON_SIZES: number[] = [2, 3, 4, 5, 6, 7, 8, 10, 12, 15, 20, 25, 30];

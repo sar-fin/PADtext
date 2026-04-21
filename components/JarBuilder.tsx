@@ -169,7 +169,7 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
               />
             </div>
             <div>
-              <label className="field-label">Till (valfritt)</label>
+              <label className="field-label">Max (valfritt)</label>
               <input
                 type="number"
                 min={sizeMin + 1}

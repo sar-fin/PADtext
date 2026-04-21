@@ -17,7 +17,7 @@ export default function PresetPackages({ activeProcedures, nextJarNumber, onAddP
     <section className="panel">
       <h2 className="panel-title">Paketbiopsier</h2>
       <p className="preset-hint">
-        Lägger till färdiga burkkombinationer från burk {nextJarNumber}.
+        Lägger till förifyllda burkkombinationer — numrering börjar på burk {nextJarNumber}.
       </p>
       <div className="preset-grid">
         {visible.map((pkg) => (
