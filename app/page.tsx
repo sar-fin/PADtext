@@ -3,11 +3,13 @@
 import { useState, useCallback } from 'react';
 import type { Jar, ProcedureType, RemissState } from '@/lib/types';
 import { generateBroadtext, generateJarText } from '@/lib/textGenerator';
+import { PRESET_PACKAGES } from '@/lib/constants';
 import ProcedureSelector from '@/components/ProcedureSelector';
 import IndicationPanel from '@/components/IndicationPanel';
 import JarBuilder from '@/components/JarBuilder';
 import JarList from '@/components/JarList';
 import PreviewPanel from '@/components/PreviewPanel';
+import PresetPackages from '@/components/PresetPackages';
 
 const emptyProcedure = { indications: [], findings: [], freeText: '' };
 
@@ -64,6 +66,22 @@ export default function Home() {
 
   const addJar = useCallback((jar: Jar) => {
     setState((prev) => ({ ...prev, jars: [...prev.jars, jar] }));
+  }, []);
+
+  const addPreset = useCallback((packageId: string) => {
+    const pkg = PRESET_PACKAGES.find((p) => p.id === packageId);
+    if (!pkg) return;
+    setState((prev) => {
+      const startNumber = prev.jars.length + 1;
+      const newJars: Jar[] = pkg.jars.map((pj, i) => ({
+        id: crypto.randomUUID(),
+        jarNumber: startNumber + i,
+        procedure: pkg.procedure,
+        anatomicalSegment: pj.anatomicalSegment,
+        specimenType: pj.specimenType,
+      }));
+      return { ...prev, jars: [...prev.jars, ...newJars] };
+    });
   }, []);
 
   const removeJar = useCallback((id: string) => {
@@ -127,6 +145,12 @@ export default function Home() {
               onFreeTextChange={(text) => setProcedureFreeText(p, text)}
             />
           ))}
+
+          <PresetPackages
+            activeProcedures={state.activeProcedures}
+            nextJarNumber={state.jars.length + 1}
+            onAddPreset={addPreset}
+          />
 
           <JarBuilder
             activeProcedures={state.activeProcedures}

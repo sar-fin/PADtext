@@ -42,6 +42,7 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Duodenal ulcus',
     'Erosioner',
     'Polyp',
+    'Tumör',
     'Varices',
     'Angiodysplasier',
   ],
@@ -54,6 +55,7 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Ulcerationer',
     'Angiodysplasier',
     'Melanosis coli',
+    'Tumör',
   ],
 };
 
@@ -67,6 +69,8 @@ export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
     'Fundus',
     'Corpus',
     'Antrum',
+    'Angulusveck',
+    'Antrum + angulusveck',
     'Pylorus',
     'Bulbus duodeni',
     'Pars descendens duodeni',
@@ -85,6 +89,44 @@ export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
     'Terminalt ileum',
   ],
 };
+
+/* ── Paketbiopsier ────────────────────────── */
+export interface PresetJar {
+  anatomicalSegment: string;
+  specimenType: SpecimenType;
+  label?: string; // optional extra description for the jar
+}
+
+export interface PresetPackage {
+  id: string;
+  label: string;
+  description: string;
+  procedure: ProcedureType;
+  jars: PresetJar[];
+}
+
+export const PRESET_PACKAGES: PresetPackage[] = [
+  {
+    id: 'celiaki',
+    label: 'Celiaki',
+    description: 'Pars desc. + Bulbus',
+    procedure: 'gastroskopi',
+    jars: [
+      { anatomicalSegment: 'Pars descendens duodeni', specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Bulbus duodeni',          specimenType: 'Biopsi' },
+    ],
+  },
+  {
+    id: 'atrofisk-gastrit',
+    label: 'Atrofisk gastrit',
+    description: 'Antrum/angulus + Corpus',
+    procedure: 'gastroskopi',
+    jars: [
+      { anatomicalSegment: 'Antrum + angulusveck', specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Corpus',               specimenType: 'Biopsi' },
+    ],
+  },
+];
 
 /* ── Procedurnamn (visningstext) ─────────── */
 export const PROCEDURE_LABELS: Record<ProcedureType, string> = {

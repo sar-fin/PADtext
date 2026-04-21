@@ -643,6 +643,77 @@ body {
   color: var(--white) !important;
 }
 
+/* ── Preset packages ─────────────────────────── */
+
+.preset-hint {
+  font-size: 0.78rem;
+  color: var(--slate-500);
+  margin-bottom: 0.85rem;
+}
+
+.preset-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.13s;
+  text-align: left;
+  min-width: 160px;
+}
+
+.preset-btn--gastroskopi {
+  border-color: var(--amber-200);
+  background: var(--amber-50);
+  color: var(--amber-700);
+}
+
+.preset-btn--gastroskopi:hover {
+  background: var(--amber-500);
+  border-color: var(--amber-500);
+  color: var(--white);
+}
+
+.preset-btn--koloskopi {
+  border-color: var(--teal-200);
+  background: var(--teal-50);
+  color: var(--teal-700);
+}
+
+.preset-btn--koloskopi:hover {
+  background: var(--teal-700);
+  border-color: var(--teal-700);
+  color: var(--white);
+}
+
+.preset-btn-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.preset-btn-desc {
+  font-size: 0.72rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.preset-btn-count {
+  font-size: 0.68rem;
+  font-weight: 500;
+  opacity: 0.55;
+  margin-top: 0.1rem;
+}
+
 /* ── Reset button ────────────────────────────── */
 
 .reset-btn {
