@@ -79,6 +79,7 @@ export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
     'Rektum',
     'Rektosigmoid',
     'Sigmoideum',
+    'Sigmoideum/rektum',
     'Colon descendens',
     'Vänster flexur',
     'Colon transversum',
@@ -124,6 +125,41 @@ export const PRESET_PACKAGES: PresetPackage[] = [
     jars: [
       { anatomicalSegment: 'Antrum + angulusveck', specimenType: 'Biopsi' },
       { anatomicalSegment: 'Corpus',               specimenType: 'Biopsi' },
+    ],
+  },
+  {
+    id: 'ibd-1',
+    label: 'IBD 1',
+    description: 'Ileum + 4 kolonavsnitt',
+    procedure: 'koloskopi',
+    jars: [
+      { anatomicalSegment: 'Terminalt ileum',   specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon ascendens',   specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon transversum', specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon descendens',  specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Sigmoideum/rektum', specimenType: 'Biopsi' },
+    ],
+  },
+  {
+    id: 'ibd-2',
+    label: 'IBD 2',
+    description: '4 kolonavsnitt (utan ileum)',
+    procedure: 'koloskopi',
+    jars: [
+      { anatomicalSegment: 'Colon ascendens',   specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon transversum', specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon descendens',  specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Sigmoideum/rektum', specimenType: 'Biopsi' },
+    ],
+  },
+  {
+    id: 'mikroskopisk-kolit',
+    label: 'Mikroskopisk kolit',
+    description: 'Ascendens + Descendens',
+    procedure: 'koloskopi',
+    jars: [
+      { anatomicalSegment: 'Colon ascendens',  specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Colon descendens', specimenType: 'Biopsi' },
     ],
   },
 ];
