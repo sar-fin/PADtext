@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { Jar, RemissState } from '@/lib/types';
-import { generateFullRemiss } from '@/lib/textGenerator';
+import { generateBroadtext, generateJarText } from '@/lib/textGenerator';
 import IndicationPanel from '@/components/IndicationPanel';
 import JarBuilder from '@/components/JarBuilder';
 import JarList from '@/components/JarList';
@@ -54,7 +54,8 @@ export default function Home() {
 
   const handleReset = () => setState(initialState);
 
-  const remissText = generateFullRemiss(state);
+  const broadtext = generateBroadtext(state);
+  const jartext = state.jars.map(generateJarText).join('\n');
 
   return (
     <div className="app-layout">
@@ -96,7 +97,7 @@ export default function Home() {
         </div>
 
         <div className="right-col">
-          <PreviewPanel text={remissText} />
+          <PreviewPanel broadtext={broadtext} jartext={jartext} />
         </div>
       </main>
     </div>
