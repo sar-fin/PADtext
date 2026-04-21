@@ -1,16 +1,24 @@
 'use client';
 
-import { useState } from 'react';
-import type { ColonSegment, SpecimenType, PolypMorphology, Jar } from '@/lib/types';
-import { COLON_SEGMENTS, SPECIMEN_TYPES, POLYP_MORPHOLOGIES, COMMON_SIZES } from '@/lib/constants';
+import { useState, useEffect } from 'react';
+import type { ProcedureType, SpecimenType, PolypMorphology, Jar } from '@/lib/types';
+import {
+  ANATOMICAL_SEGMENTS,
+  SPECIMEN_TYPES,
+  POLYP_MORPHOLOGIES,
+  COMMON_SIZES,
+  PROCEDURE_LABELS,
+} from '@/lib/constants';
 
 interface Props {
+  activeProcedures: ProcedureType[];
   nextJarNumber: number;
   onAddJar: (jar: Jar) => void;
 }
 
-export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
-  const [segment, setSegment] = useState<ColonSegment>('Sigmoideum');
+export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }: Props) {
+  const [procedure, setProcedure] = useState<ProcedureType>(activeProcedures[0]);
+  const [segment, setSegment] = useState<string>(ANATOMICAL_SEGMENTS[activeProcedures[0]][0]);
   const [specimenType, setSpecimenType] = useState<SpecimenType>('Biopsi');
   const [hasPolyp, setHasPolyp] = useState(false);
   const [morphology, setMorphology] = useState<PolypMorphology>('Sessil');
@@ -18,36 +26,73 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
   const [sizeMax, setSizeMax] = useState<number | undefined>(undefined);
   const [count, setCount] = useState(1);
 
+  // When active procedures change, ensure selected procedure is still valid
+  useEffect(() => {
+    if (!activeProcedures.includes(procedure)) {
+      setProcedure(activeProcedures[0]);
+      setSegment(ANATOMICAL_SEGMENTS[activeProcedures[0]][0]);
+    }
+  }, [activeProcedures, procedure]);
+
+  const handleProcedureSwitch = (p: ProcedureType) => {
+    setProcedure(p);
+    setSegment(ANATOMICAL_SEGMENTS[p][0]);
+  };
+
   const handleAdd = () => {
     const jar: Jar = {
       id: crypto.randomUUID(),
       jarNumber: nextJarNumber,
-      colonSegment: segment,
+      procedure,
+      anatomicalSegment: segment,
       specimenType,
       polyp: hasPolyp
-        ? { morphology, sizeMin, sizeMax: sizeMax && sizeMax > sizeMin ? sizeMax : undefined, count }
+        ? {
+            morphology,
+            sizeMin,
+            sizeMax: sizeMax && sizeMax > sizeMin ? sizeMax : undefined,
+            count,
+          }
         : undefined,
     };
     onAddJar(jar);
-    // Reset polyp fields but keep segment/type for quick re-use
     setHasPolyp(false);
     setCount(1);
     setSizeMin(5);
     setSizeMax(undefined);
   };
 
+  const segments = ANATOMICAL_SEGMENTS[procedure];
+
   return (
     <section className="panel">
       <h2 className="panel-title">Lägg till burk</h2>
 
-      {/* Colon segment */}
-      <label className="field-label">Kolonavsnitt</label>
+      {/* Procedure toggle — only shown when both active */}
+      {activeProcedures.length > 1 && (
+        <div className="jar-proc-toggle">
+          {activeProcedures.map((p) => (
+            <button
+              key={p}
+              onClick={() => handleProcedureSwitch(p)}
+              className={`jar-proc-btn ${procedure === p ? `jar-proc-btn--active jar-proc-btn--${p}` : ''}`}
+            >
+              {PROCEDURE_LABELS[p]}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Anatomical segment */}
+      <label className="field-label">
+        {procedure === 'gastroskopi' ? 'Lokalisation' : 'Kolonavsnitt'}
+      </label>
       <div className="chip-grid mb-4">
-        {COLON_SEGMENTS.map((s) => (
+        {segments.map((s) => (
           <button
             key={s}
             onClick={() => setSegment(s)}
-            className={`chip ${segment === s ? 'chip--active' : ''}`}
+            className={`chip ${segment === s ? `chip--active chip--active-${procedure}` : ''}`}
           >
             {s}
           </button>
@@ -62,10 +107,10 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
             key={t}
             onClick={() => {
               setSpecimenType(t);
-              if (t === 'Biopsi') setHasPolyp(false);
-              else setHasPolyp(true);
+              if (t !== 'Biopsi') setHasPolyp(true);
+              else setHasPolyp(false);
             }}
-            className={`chip ${specimenType === t ? 'chip--active' : ''}`}
+            className={`chip ${specimenType === t ? `chip--active chip--active-${procedure}` : ''}`}
           >
             {t}
           </button>
@@ -92,7 +137,7 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
               <button
                 key={m}
                 onClick={() => setMorphology(m)}
-                className={`chip ${morphology === m ? 'chip--active' : ''}`}
+                className={`chip ${morphology === m ? `chip--active chip--active-${procedure}` : ''}`}
               >
                 {m}
               </button>
@@ -107,7 +152,7 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
                   <button
                     key={s}
                     onClick={() => setSizeMin(s)}
-                    className={`chip chip--sm ${sizeMin === s ? 'chip--active' : ''}`}
+                    className={`chip chip--sm ${sizeMin === s ? `chip--active chip--active-${procedure}` : ''}`}
                   >
                     {s}
                   </button>
@@ -142,7 +187,7 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
                   <button
                     key={n}
                     onClick={() => setCount(n)}
-                    className={`chip chip--sm ${count === n ? 'chip--active' : ''}`}
+                    className={`chip chip--sm ${count === n ? `chip--active chip--active-${procedure}` : ''}`}
                   >
                     {n}
                   </button>
@@ -160,9 +205,13 @@ export default function JarBuilder({ nextJarNumber, onAddJar }: Props) {
         </div>
       )}
 
-      <button onClick={handleAdd} className="add-btn mt-5">
+      <button
+        onClick={handleAdd}
+        className={`add-btn add-btn--${procedure} mt-5`}
+      >
         + Lägg till burk {nextJarNumber}
       </button>
     </section>
   );
 }
+

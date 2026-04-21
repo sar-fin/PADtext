@@ -1,16 +1,18 @@
 'use client';
 
 import type { Jar } from '@/lib/types';
-import { generateJarText } from '@/lib/textGenerator';
+import { generateJarText, } from '@/lib/textGenerator';
+import { PROCEDURE_LABELS } from '@/lib/constants';
 
 interface Props {
   jars: Jar[];
+  showProcedureBadge: boolean;
   onRemove: (id: string) => void;
   onMoveUp: (id: string) => void;
   onMoveDown: (id: string) => void;
 }
 
-export default function JarList({ jars, onRemove, onMoveUp, onMoveDown }: Props) {
+export default function JarList({ jars, showProcedureBadge, onRemove, onMoveUp, onMoveDown }: Props) {
   if (jars.length === 0) return null;
 
   return (
@@ -20,7 +22,14 @@ export default function JarList({ jars, onRemove, onMoveUp, onMoveDown }: Props)
         {jars.map((jar, idx) => (
           <li key={jar.id} className="jar-item">
             <span className="jar-number">{jar.jarNumber}</span>
-            <span className="jar-text">{generateJarText(jar)}</span>
+            <span className="jar-text">
+              {showProcedureBadge && (
+                <span className={`jar-proc-badge jar-proc-badge--${jar.procedure}`}>
+                  {PROCEDURE_LABELS[jar.procedure].slice(0, 6)}
+                </span>
+              )}
+              {generateJarText(jar)}
+            </span>
             <span className="jar-actions">
               <button
                 onClick={() => onMoveUp(jar.id)}
@@ -52,3 +61,4 @@ export default function JarList({ jars, onRemove, onMoveUp, onMoveDown }: Props)
     </section>
   );
 }
+

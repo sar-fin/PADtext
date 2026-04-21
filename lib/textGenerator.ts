@@ -1,11 +1,16 @@
-import type { RemissState, Jar } from './types';
+import type { RemissState, ProcedureState, ProcedureType, Jar } from './types';
+import { PROCEDURE_LABELS } from './constants';
 
-export function generateBroadtext(state: RemissState): string {
+export function generateProcedureText(
+  type: ProcedureType,
+  state: ProcedureState,
+): string {
   const parts: string[] = [];
+  const label = PROCEDURE_LABELS[type];
 
   if (state.indications.length > 0) {
     const indStr = state.indications.join(', ').toLowerCase();
-    parts.push(`Koloskopi utförd på indikation ${indStr}.`);
+    parts.push(`${label} utförd på indikation ${indStr}.`);
   }
 
   if (state.findings.length > 0) {
@@ -22,8 +27,17 @@ export function generateBroadtext(state: RemissState): string {
   return parts.join(' ');
 }
 
+export function generateBroadtext(state: RemissState): string {
+  return state.activeProcedures
+    .map((p) => generateProcedureText(p, state.procedures[p]))
+    .filter(Boolean)
+    .join('\n\n');
+}
+
 export function generateJarText(jar: Jar): string {
-  const parts: string[] = [`Burk ${jar.jarNumber}: ${jar.colonSegment}, ${jar.specimenType.toLowerCase()}.`];
+  const parts: string[] = [
+    `Burk ${jar.jarNumber}: ${jar.anatomicalSegment}, ${jar.specimenType.toLowerCase()}.`,
+  ];
 
   if (jar.polyp) {
     const { morphology, sizeMin, sizeMax, count } = jar.polyp;
@@ -35,14 +49,3 @@ export function generateJarText(jar: Jar): string {
   return parts.join('');
 }
 
-export function generateFullRemiss(state: RemissState): string {
-  const broadtext = generateBroadtext(state);
-  const jarLines = state.jars.map(generateJarText);
-
-  if (broadtext && jarLines.length > 0) {
-    return broadtext + '\n\n' + jarLines.join('\n');
-  }
-  if (broadtext) return broadtext;
-  if (jarLines.length > 0) return jarLines.join('\n');
-  return '';
-}

@@ -1,8 +1,10 @@
 'use client';
 
-import { INDICATIONS, MACROSCOPIC_FINDINGS } from '@/lib/constants';
+import type { ProcedureType } from '@/lib/types';
+import { INDICATIONS, MACROSCOPIC_FINDINGS, PROCEDURE_LABELS } from '@/lib/constants';
 
 interface Props {
+  procedure: ProcedureType;
   selectedIndications: string[];
   selectedFindings: string[];
   freeText: string;
@@ -12,6 +14,7 @@ interface Props {
 }
 
 export default function IndicationPanel({
+  procedure,
   selectedIndications,
   selectedFindings,
   freeText,
@@ -19,15 +22,21 @@ export default function IndicationPanel({
   onToggleFinding,
   onFreeTextChange,
 }: Props) {
+  const label = PROCEDURE_LABELS[procedure];
+
   return (
-    <section className="panel">
+    <section className={`panel panel--${procedure}`}>
+      <div className="panel-proc-header">
+        <span className={`proc-badge proc-badge--${procedure}`}>{label}</span>
+      </div>
+
       <h2 className="panel-title">Indikation</h2>
       <div className="chip-grid">
-        {INDICATIONS.map((item) => (
+        {INDICATIONS[procedure].map((item) => (
           <button
             key={item}
             onClick={() => onToggleIndication(item)}
-            className={`chip ${selectedIndications.includes(item) ? 'chip--active' : ''}`}
+            className={`chip ${selectedIndications.includes(item) ? `chip--active chip--active-${procedure}` : ''}`}
           >
             {item}
           </button>
@@ -36,11 +45,11 @@ export default function IndicationPanel({
 
       <h2 className="panel-title mt-6">Makroskopiska fynd</h2>
       <div className="chip-grid">
-        {MACROSCOPIC_FINDINGS.map((item) => (
+        {MACROSCOPIC_FINDINGS[procedure].map((item) => (
           <button
             key={item}
             onClick={() => onToggleFinding(item)}
-            className={`chip ${selectedFindings.includes(item) ? 'chip--active' : ''}`}
+            className={`chip ${selectedFindings.includes(item) ? `chip--active chip--active-${procedure}` : ''}`}
           >
             {item}
           </button>
@@ -52,9 +61,10 @@ export default function IndicationPanel({
         className="freetext-input"
         value={freeText}
         onChange={(e) => onFreeTextChange(e.target.value)}
-        placeholder="Lägg till övriga kommentarer…"
+        placeholder={`Övriga kommentarer för ${label.toLowerCase()}…`}
         rows={2}
       />
     </section>
   );
 }
+

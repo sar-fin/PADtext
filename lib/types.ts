@@ -1,15 +1,4 @@
-export type ColonSegment =
-  | 'Rektum'
-  | 'Rektosigmoid'
-  | 'Sigmoideum'
-  | 'Colon descendens'
-  | 'Vänster flexur'
-  | 'Colon transversum'
-  | 'Höger flexur'
-  | 'Colon ascendens'
-  | 'Cekum'
-  | 'Ileocekalklaff'
-  | 'Terminalt ileum';
+export type ProcedureType = 'gastroskopi' | 'koloskopi';
 
 export type SpecimenType =
   | 'Biopsi'
@@ -33,14 +22,20 @@ export interface PolypDescription {
 export interface Jar {
   id: string;
   jarNumber: number;
-  colonSegment: ColonSegment;
+  procedure: ProcedureType;
+  anatomicalSegment: string;
   specimenType: SpecimenType;
   polyp?: PolypDescription;
 }
 
-export interface RemissState {
+export interface ProcedureState {
   indications: string[];
   findings: string[];
   freeText: string;
+}
+
+export interface RemissState {
+  activeProcedures: ProcedureType[];
+  procedures: Record<ProcedureType, ProcedureState>;
   jars: Jar[];
 }

@@ -1,31 +1,65 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import type { Jar, RemissState } from '@/lib/types';
+import type { Jar, ProcedureType, RemissState } from '@/lib/types';
 import { generateBroadtext, generateJarText } from '@/lib/textGenerator';
+import ProcedureSelector from '@/components/ProcedureSelector';
 import IndicationPanel from '@/components/IndicationPanel';
 import JarBuilder from '@/components/JarBuilder';
 import JarList from '@/components/JarList';
 import PreviewPanel from '@/components/PreviewPanel';
 
+const emptyProcedure = { indications: [], findings: [], freeText: '' };
+
 const initialState: RemissState = {
-  indications: [],
-  findings: [],
-  freeText: '',
+  activeProcedures: ['koloskopi'],
+  procedures: {
+    gastroskopi: { ...emptyProcedure },
+    koloskopi:   { ...emptyProcedure },
+  },
   jars: [],
 };
 
 export default function Home() {
   const [state, setState] = useState<RemissState>(initialState);
 
-  const toggleItem = useCallback((key: 'indications' | 'findings', item: string) => {
-    setState((prev) => {
-      const arr = prev[key];
-      return {
-        ...prev,
-        [key]: arr.includes(item) ? arr.filter((x) => x !== item) : [...arr, item],
-      };
-    });
+  const handleProcedureChange = useCallback((active: ProcedureType[]) => {
+    setState((prev) => ({
+      ...prev,
+      activeProcedures: active,
+      jars: prev.jars
+        .filter((j) => active.includes(j.procedure))
+        .map((j, i) => ({ ...j, jarNumber: i + 1 })),
+    }));
+  }, []);
+
+  const toggleProcedureItem = useCallback(
+    (procedure: ProcedureType, key: 'indications' | 'findings', item: string) => {
+      setState((prev) => {
+        const arr = prev.procedures[procedure][key];
+        return {
+          ...prev,
+          procedures: {
+            ...prev.procedures,
+            [procedure]: {
+              ...prev.procedures[procedure],
+              [key]: arr.includes(item) ? arr.filter((x) => x !== item) : [...arr, item],
+            },
+          },
+        };
+      });
+    },
+    [],
+  );
+
+  const setProcedureFreeText = useCallback((procedure: ProcedureType, text: string) => {
+    setState((prev) => ({
+      ...prev,
+      procedures: {
+        ...prev.procedures,
+        [procedure]: { ...prev.procedures[procedure], freeText: text },
+      },
+    }));
   }, []);
 
   const addJar = useCallback((jar: Jar) => {
@@ -34,8 +68,10 @@ export default function Home() {
 
   const removeJar = useCallback((id: string) => {
     setState((prev) => {
-      const jars = prev.jars.filter((j) => j.id !== id);
-      return { ...prev, jars: jars.map((j, i) => ({ ...j, jarNumber: i + 1 })) };
+      const jars = prev.jars
+        .filter((j) => j.id !== id)
+        .map((j, i) => ({ ...j, jarNumber: i + 1 }));
+      return { ...prev, jars };
     });
   }, []);
 
@@ -47,15 +83,15 @@ export default function Home() {
       const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
       if (swapIdx < 0 || swapIdx >= jars.length) return prev;
       [jars[idx], jars[swapIdx]] = [jars[swapIdx], jars[idx]];
-      const renumbered = jars.map((j, i) => ({ ...j, jarNumber: i + 1 }));
-      return { ...prev, jars: renumbered };
+      return { ...prev, jars: jars.map((j, i) => ({ ...j, jarNumber: i + 1 })) };
     });
   }, []);
 
   const handleReset = () => setState(initialState);
 
   const broadtext = generateBroadtext(state);
-  const jartext = state.jars.map(generateJarText).join('\n');
+  const jartext   = state.jars.map(generateJarText).join('\n');
+  const showBadge = state.activeProcedures.length > 1;
 
   return (
     <div className="app-layout">
@@ -64,32 +100,43 @@ export default function Home() {
           <div className="header-title-group">
             <span className="header-badge">PAD</span>
             <h1 className="header-title">Remissgenerator</h1>
-            <span className="header-sub">Koloskopi</span>
           </div>
-          <button onClick={handleReset} className="reset-btn">
-            Nollställ
-          </button>
+          <div className="header-right">
+            <ProcedureSelector
+              active={state.activeProcedures}
+              onChange={handleProcedureChange}
+            />
+            <button onClick={handleReset} className="reset-btn">
+              Nollställ
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="main-grid">
         <div className="left-col">
-          <IndicationPanel
-            selectedIndications={state.indications}
-            selectedFindings={state.findings}
-            freeText={state.freeText}
-            onToggleIndication={(item) => toggleItem('indications', item)}
-            onToggleFinding={(item) => toggleItem('findings', item)}
-            onFreeTextChange={(text) => setState((p) => ({ ...p, freeText: text }))}
-          />
+          {state.activeProcedures.map((p) => (
+            <IndicationPanel
+              key={p}
+              procedure={p}
+              selectedIndications={state.procedures[p].indications}
+              selectedFindings={state.procedures[p].findings}
+              freeText={state.procedures[p].freeText}
+              onToggleIndication={(item) => toggleProcedureItem(p, 'indications', item)}
+              onToggleFinding={(item) => toggleProcedureItem(p, 'findings', item)}
+              onFreeTextChange={(text) => setProcedureFreeText(p, text)}
+            />
+          ))}
 
           <JarBuilder
+            activeProcedures={state.activeProcedures}
             nextJarNumber={state.jars.length + 1}
             onAddJar={addJar}
           />
 
           <JarList
             jars={state.jars}
+            showProcedureBadge={showBadge}
             onRemove={removeJar}
             onMoveUp={(id) => moveJar(id, 'up')}
             onMoveDown={(id) => moveJar(id, 'down')}
