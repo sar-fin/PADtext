@@ -119,6 +119,8 @@ export const PRESET_PACKAGES: PresetPackage[] = [
       { anatomicalSegment: 'Esofagus proximalt',  specimenType: 'Biopsi' },
     ],
   },
+  {
+    id: 'celiaki',
     label: 'Celiaki',
     description: 'Pars desc. + Bulbus',
     procedure: 'gastroskopi',
