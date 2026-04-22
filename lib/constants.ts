@@ -63,6 +63,7 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
 export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
   gastroskopi: [
     'Esofagus proximalt',
+    'Esofagus mellersta',
     'Esofagus distalt',
     'GEJ',
     'Cardia',
@@ -108,7 +109,16 @@ export interface PresetPackage {
 
 export const PRESET_PACKAGES: PresetPackage[] = [
   {
-    id: 'celiaki',
+    id: 'eosinofil-esofagit',
+    label: 'Eosinofil esofagit',
+    description: 'Distala + mellersta + proximala esofagus',
+    procedure: 'gastroskopi',
+    jars: [
+      { anatomicalSegment: 'Esofagus distalt',   specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Esofagus mellersta',  specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Esofagus proximalt',  specimenType: 'Biopsi' },
+    ],
+  },
     label: 'Celiaki',
     description: 'Pars desc. + Bulbus',
     procedure: 'gastroskopi',
