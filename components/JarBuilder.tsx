@@ -21,7 +21,7 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
   const [segment, setSegment] = useState<string>(ANATOMICAL_SEGMENTS[activeProcedures[0]][0]);
   const [specimenType, setSpecimenType] = useState<SpecimenType>('Biopsi');
   const [hasPolyp, setHasPolyp] = useState(false);
-  const [morphology, setMorphology] = useState<PolypMorphology>('Sessil');
+  const [morphology, setMorphology] = useState<PolypMorphology>('SSL');
   const [sizeMin, setSizeMin] = useState(5);
   const [sizeMax, setSizeMax] = useState<number | undefined>(undefined);
   const [count, setCount] = useState(1);
