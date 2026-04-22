@@ -1,6 +1,7 @@
 'use client';
 
-import type { ProcedureType } from '@/lib/types';
+import { useState } from 'react';
+import type { ProcedureType, UceisScore } from '@/lib/types';
 import { INDICATIONS, MACROSCOPIC_FINDINGS, PROCEDURE_LABELS } from '@/lib/constants';
 
 interface Props {
@@ -8,21 +9,63 @@ interface Props {
   selectedIndications: string[];
   selectedFindings: string[];
   freeText: string;
+  uceis?: UceisScore;
   onToggleIndication: (item: string) => void;
   onToggleFinding: (item: string) => void;
   onFreeTextChange: (text: string) => void;
+  onUceisChange: (score: UceisScore | undefined) => void;
 }
+
+const UCEIS_VASCULAR: { label: string; value: 0 | 1 | 2 }[] = [
+  { label: '0 – Normalt', value: 0 },
+  { label: '1 – Partiellt oblitererat', value: 1 },
+  { label: '2 – Oblitererat', value: 2 },
+];
+
+const UCEIS_BLEEDING: { label: string; value: 0 | 1 | 2 | 3 }[] = [
+  { label: '0 – Ingen', value: 0 },
+  { label: '1 – Mukosal', value: 1 },
+  { label: '2 – Luminal lindrig', value: 2 },
+  { label: '3 – Luminal måttlig–svår', value: 3 },
+];
+
+const UCEIS_EROSIONS: { label: string; value: 0 | 1 | 2 | 3 }[] = [
+  { label: '0 – Inga', value: 0 },
+  { label: '1 – Erosioner', value: 1 },
+  { label: '2 – Ytligt ulcus', value: 2 },
+  { label: '3 – Djupt ulcus', value: 3 },
+];
 
 export default function IndicationPanel({
   procedure,
   selectedIndications,
   selectedFindings,
   freeText,
+  uceis,
   onToggleIndication,
   onToggleFinding,
   onFreeTextChange,
+  onUceisChange,
 }: Props) {
   const label = PROCEDURE_LABELS[procedure];
+  const [uceisOpen, setUceisOpen] = useState(false);
+
+  const handleUceisToggle = () => {
+    if (uceisOpen) {
+      setUceisOpen(false);
+      onUceisChange(undefined);
+    } else {
+      setUceisOpen(true);
+      onUceisChange({ vascular: 0, bleeding: 0, erosions: 0 });
+    }
+  };
+
+  const updateUceis = (field: keyof UceisScore, value: number) => {
+    if (!uceis) return;
+    onUceisChange({ ...uceis, [field]: value });
+  };
+
+  const uceisTotal = uceis ? uceis.vascular + uceis.bleeding + uceis.erosions : 0;
 
   return (
     <section className={`panel panel--${procedure}`}>
@@ -54,7 +97,69 @@ export default function IndicationPanel({
             {item}
           </button>
         ))}
+
+        {procedure === 'koloskopi' && (
+          <button
+            onClick={handleUceisToggle}
+            className={`chip ${uceisOpen ? `chip--active chip--active-${procedure}` : ''}`}
+          >
+            UCEIS{uceisOpen ? ` (${uceisTotal}/8)` : ''}
+          </button>
+        )}
       </div>
+
+      {uceisOpen && uceis && (
+        <div className="uceis-panel">
+          <div className="uceis-section">
+            <span className="uceis-label">Vaskulärt mönster</span>
+            <div className="chip-grid">
+              {UCEIS_VASCULAR.map(({ label: l, value }) => (
+                <button
+                  key={value}
+                  onClick={() => updateUceis('vascular', value)}
+                  className={`chip chip--sm ${uceis.vascular === value ? `chip--active chip--active-${procedure}` : ''}`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="uceis-section">
+            <span className="uceis-label">Blödning</span>
+            <div className="chip-grid">
+              {UCEIS_BLEEDING.map(({ label: l, value }) => (
+                <button
+                  key={value}
+                  onClick={() => updateUceis('bleeding', value)}
+                  className={`chip chip--sm ${uceis.bleeding === value ? `chip--active chip--active-${procedure}` : ''}`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="uceis-section">
+            <span className="uceis-label">Erosioner / ulcerationer</span>
+            <div className="chip-grid">
+              {UCEIS_EROSIONS.map(({ label: l, value }) => (
+                <button
+                  key={value}
+                  onClick={() => updateUceis('erosions', value)}
+                  className={`chip chip--sm ${uceis.erosions === value ? `chip--active chip--active-${procedure}` : ''}`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="uceis-total">
+            Totalt: <strong>{uceisTotal}/8</strong>
+            {uceisTotal <= 2 && <span className="uceis-severity uceis-severity--mild"> — Lindrig</span>}
+            {uceisTotal >= 3 && uceisTotal <= 4 && <span className="uceis-severity uceis-severity--moderate"> — Måttlig</span>}
+            {uceisTotal >= 5 && <span className="uceis-severity uceis-severity--severe"> — Svår</span>}
+          </div>
+        </div>
+      )}
 
       <h2 className="panel-title mt-6">Fritext (valfritt)</h2>
       <textarea
@@ -67,4 +172,3 @@ export default function IndicationPanel({
     </section>
   );
 }
-

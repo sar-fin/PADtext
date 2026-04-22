@@ -8,6 +8,12 @@ export type PolypMorphology =
   | 'SSL'
   | 'Adenom';
 
+export interface UceisScore {
+  vascular: 0 | 1 | 2;
+  bleeding: 0 | 1 | 2 | 3;
+  erosions: 0 | 1 | 2 | 3;
+}
+
 export interface PolypDescription {
   morphology: PolypMorphology;
   sizeMin: number;
@@ -28,6 +34,7 @@ export interface ProcedureState {
   indications: string[];
   findings: string[];
   freeText: string;
+  uceis?: UceisScore;
 }
 
 export interface RemissState {

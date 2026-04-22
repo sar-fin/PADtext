@@ -20,7 +20,15 @@ export function generateProcedureText(
     parts.push('Makroskopiska fynd: i övrigt normal slemhinna.');
   }
 
-  if (state.freeText.trim()) {
+  if (state.uceis) {
+    const { vascular, bleeding, erosions } = state.uceis;
+    const total = vascular + bleeding + erosions;
+    parts.push(
+      `UCEIS: vaskulärt mönster ${vascular}, blödning ${bleeding}, erosioner/ulcerationer ${erosions} (totalt ${total}/8).`
+    );
+  }
+
+
     parts.push(state.freeText.trim());
   }
 

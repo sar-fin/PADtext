@@ -52,11 +52,9 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Normal slemhinna',
     'Divertiklar',
     'Hemorrojder',
-    'Erytematös slemhinna',
     'Erosioner',
     'Ulcerationer',
     'Angiodysplasier',
-    'Melanosis coli',
     'Tumör',
   ],
 };

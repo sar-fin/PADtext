@@ -741,3 +741,47 @@ body {
 .gap-2 { gap: 0.5rem; }
 .cursor-pointer { cursor: pointer; }
 .select-none { user-select: none; }
+
+/* ── UCEIS ───────────────────────────────────── */
+
+.uceis-panel {
+  margin-top: 0.75rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.uceis-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.uceis-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.uceis-total {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.uceis-severity {
+  font-weight: 500;
+}
+
+.uceis-severity--mild    { color: #6ee7b7; }
+.uceis-severity--moderate { color: #fcd34d; }
+.uceis-severity--severe  { color: #f87171; }

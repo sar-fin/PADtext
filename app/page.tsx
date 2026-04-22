@@ -105,6 +105,16 @@ export default function Home() {
     });
   }, []);
 
+  const setUceis = useCallback((procedure: ProcedureType, uceis: import('@/lib/types').UceisScore | undefined) => {
+    setState((prev) => ({
+      ...prev,
+      procedures: {
+        ...prev.procedures,
+        [procedure]: { ...prev.procedures[procedure], uceis },
+      },
+    }));
+  }, []);
+
   const handleReset = () => setState(initialState);
 
   const broadtext = generateBroadtext(state);
@@ -140,9 +150,11 @@ export default function Home() {
               selectedIndications={state.procedures[p].indications}
               selectedFindings={state.procedures[p].findings}
               freeText={state.procedures[p].freeText}
+              uceis={state.procedures[p].uceis}
               onToggleIndication={(item) => toggleProcedureItem(p, 'indications', item)}
               onToggleFinding={(item) => toggleProcedureItem(p, 'findings', item)}
               onFreeTextChange={(text) => setProcedureFreeText(p, text)}
+              onUceisChange={(score) => setUceis(p, score)}
             />
           ))}
 
