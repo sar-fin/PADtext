@@ -28,7 +28,7 @@ export function generateProcedureText(
     );
   }
 
-
+  if (state.freeText.trim()) {
     parts.push(state.freeText.trim());
   }
 
