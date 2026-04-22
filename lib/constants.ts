@@ -88,8 +88,8 @@ export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
     'Höger flexur',
     'Colon ascendens',
     'Cekum',
-    'Ileocekalklaff',
-    'Terminalt ileum',
+    'Ileocekalvalv',
+    'Terminala ileum',
   ],
 };
 
@@ -135,7 +135,7 @@ export const PRESET_PACKAGES: PresetPackage[] = [
     description: 'Ileum + 4 kolonavsnitt',
     procedure: 'koloskopi',
     jars: [
-      { anatomicalSegment: 'Terminalt ileum',   specimenType: 'Biopsi' },
+      { anatomicalSegment: 'Terminala ileum',   specimenType: 'Biopsi' },
       { anatomicalSegment: 'Colon ascendens',   specimenType: 'Biopsi' },
       { anatomicalSegment: 'Colon transversum', specimenType: 'Biopsi' },
       { anatomicalSegment: 'Colon descendens',  specimenType: 'Biopsi' },
