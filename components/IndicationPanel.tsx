@@ -17,23 +17,23 @@ interface Props {
 }
 
 const UCEIS_VASCULAR: { label: string; value: 0 | 1 | 2 }[] = [
-  { label: '0 – Normalt', value: 0 },
-  { label: '1 – Partiellt oblitererat', value: 1 },
-  { label: '2 – Oblitererat', value: 2 },
+  { label: '0 – Normal', value: 0 },
+  { label: '1 – Patchy obliteration', value: 1 },
+  { label: '2 – Obliterated', value: 2 },
 ];
 
 const UCEIS_BLEEDING: { label: string; value: 0 | 1 | 2 | 3 }[] = [
-  { label: '0 – Ingen', value: 0 },
-  { label: '1 – Mukosal', value: 1 },
-  { label: '2 – Luminal lindrig', value: 2 },
-  { label: '3 – Luminal måttlig–svår', value: 3 },
+  { label: '0 – None', value: 0 },
+  { label: '1 – Mucosal', value: 1 },
+  { label: '2 – Luminal mild', value: 2 },
+  { label: '3 – Luminal moderate or severe', value: 3 },
 ];
 
 const UCEIS_EROSIONS: { label: string; value: 0 | 1 | 2 | 3 }[] = [
-  { label: '0 – Inga', value: 0 },
-  { label: '1 – Erosioner', value: 1 },
-  { label: '2 – Ytligt ulcus', value: 2 },
-  { label: '3 – Djupt ulcus', value: 3 },
+  { label: '0 – None', value: 0 },
+  { label: '1 – Erosion', value: 1 },
+  { label: '2 – Superficial ulcer', value: 2 },
+  { label: '3 – Deep ulcer', value: 3 },
 ];
 
 export default function IndicationPanel({
@@ -111,7 +111,7 @@ export default function IndicationPanel({
       {uceisOpen && uceis && (
         <div className="uceis-panel">
           <div className="uceis-section">
-            <span className="uceis-label">Vaskulärt mönster</span>
+            <span className="uceis-label">Vascular pattern</span>
             <div className="chip-grid">
               {UCEIS_VASCULAR.map(({ label: l, value }) => (
                 <button
@@ -125,7 +125,7 @@ export default function IndicationPanel({
             </div>
           </div>
           <div className="uceis-section">
-            <span className="uceis-label">Blödning</span>
+            <span className="uceis-label">Bleeding</span>
             <div className="chip-grid">
               {UCEIS_BLEEDING.map(({ label: l, value }) => (
                 <button
@@ -139,7 +139,7 @@ export default function IndicationPanel({
             </div>
           </div>
           <div className="uceis-section">
-            <span className="uceis-label">Erosioner / ulcerationer</span>
+            <span className="uceis-label">Erosions and ulcers</span>
             <div className="chip-grid">
               {UCEIS_EROSIONS.map(({ label: l, value }) => (
                 <button
@@ -154,9 +154,9 @@ export default function IndicationPanel({
           </div>
           <div className="uceis-total">
             Totalt: <strong>{uceisTotal}/8</strong>
-            {uceisTotal <= 2 && <span className="uceis-severity uceis-severity--mild"> — Lindrig</span>}
-            {uceisTotal >= 3 && uceisTotal <= 4 && <span className="uceis-severity uceis-severity--moderate"> — Måttlig</span>}
-            {uceisTotal >= 5 && <span className="uceis-severity uceis-severity--severe"> — Svår</span>}
+            {uceisTotal <= 2 && <span className="uceis-severity uceis-severity--mild"> — Mild</span>}
+            {uceisTotal >= 3 && uceisTotal <= 4 && <span className="uceis-severity uceis-severity--moderate"> — Moderate</span>}
+            {uceisTotal >= 5 && <span className="uceis-severity uceis-severity--severe"> — Severe</span>}
           </div>
         </div>
       )}
