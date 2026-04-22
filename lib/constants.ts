@@ -11,7 +11,8 @@ export const INDICATIONS: Record<ProcedureType, string[]> = {
     'Uppföljning esofagit',
     'Barrett-kontroll',
     'Celiakiutredning',
-    'H. pylori-kontroll',
+    'Ulcuskontroll',
+    'IBD-utredning',
     'Misstänkt malignitet',
   ],
   koloskopi: [
@@ -21,8 +22,8 @@ export const INDICATIONS: Record<ProcedureType, string[]> = {
     'Förändrade avföringsvanor',
     'Buksmärtor',
     'Uppföljning IBD',
+    'IBD-utredning',
     'Kontroll efter polypektomi',
-    'Familjär kolorektalcancer',
     'Screening',
   ],
 };
@@ -35,7 +36,7 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Esofagit grad B',
     'Esofagit grad C',
     'Esofagit grad D',
-    'Hiatus hernia',
+    'Hiatushernia',
     'Barrett-esofagus',
     'Gastrit',
     'Ventrikelulcus',
@@ -43,7 +44,8 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
     'Erosioner',
     'Polyp',
     'Tumör',
-    'Varices',
+    'Esofagusvaricer',
+    'Fundusvaricer',
     'Angiodysplasier',
   ],
   koloskopi: [
