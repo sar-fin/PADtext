@@ -24,7 +24,7 @@ export function generateProcedureText(
     const { vascular, bleeding, erosions } = state.uceis;
     const total = vascular + bleeding + erosions;
     parts.push(
-      `UCEIS: vascular pattern ${vascular}, bleeding ${bleeding}, erosions and ulcers ${erosions} (total ${total}/8).`
+      `UCEIS: kärl ${vascular}, blödning ${bleeding}, sår ${erosions} (totalt ${total}/8).`
     );
   }
 
