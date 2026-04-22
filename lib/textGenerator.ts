@@ -48,10 +48,11 @@ export function generateJarText(jar: Jar): string {
   ];
 
   if (jar.polyp) {
-    const { morphology, sizeMin, sizeMax, count } = jar.polyp;
+    const { morphology, paris, sizeMin, sizeMax, count } = jar.polyp;
     const sizeStr = sizeMax ? `${sizeMin}–${sizeMax} mm` : `${sizeMin} mm`;
     const countStr = count > 1 ? ` (${count} st)` : '';
-    parts.push(` ${morphology} polyp${countStr}, ${sizeStr}.`);
+    const parisStr = paris ? ` Paris ${paris}.` : '';
+    parts.push(` ${morphology} polyp${countStr}, ${sizeStr}.${parisStr}`);
   }
 
   return parts.join('');

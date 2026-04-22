@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { ProcedureType, SpecimenType, PolypMorphology, Jar } from '@/lib/types';
+import Image from 'next/image';
+import type { ProcedureType, SpecimenType, PolypMorphology, ParisClassification, Jar } from '@/lib/types';
 import {
   ANATOMICAL_SEGMENTS,
   SPECIMEN_TYPES,
   POLYP_MORPHOLOGIES,
+  PARIS_OPTIONS,
   COMMON_SIZES,
   PROCEDURE_LABELS,
 } from '@/lib/constants';
@@ -22,6 +24,7 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
   const [specimenType, setSpecimenType] = useState<SpecimenType>('Biopsi');
   const [hasPolyp, setHasPolyp] = useState(false);
   const [morphology, setMorphology] = useState<PolypMorphology>('SSL');
+  const [paris, setParis] = useState<ParisClassification | undefined>(undefined);
   const [sizeMin, setSizeMin] = useState(5);
   const [sizeMax, setSizeMax] = useState<number | undefined>(undefined);
   const [count, setCount] = useState(1);
@@ -49,6 +52,7 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
       polyp: hasPolyp
         ? {
             morphology,
+            paris,
             sizeMin,
             sizeMax: sizeMax && sizeMax > sizeMin ? sizeMax : undefined,
             count,
@@ -60,6 +64,7 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
     setCount(1);
     setSizeMin(5);
     setSizeMax(undefined);
+    setParis(undefined);
   };
 
   const segments = ANATOMICAL_SEGMENTS[procedure];
@@ -140,6 +145,31 @@ export default function JarBuilder({ activeProcedures, nextJarNumber, onAddJar }
                 className={`chip ${morphology === m ? `chip--active chip--active-${procedure}` : ''}`}
               >
                 {m}
+              </button>
+            ))}
+          </div>
+
+          {/* Paris classification image picker */}
+          <label className="field-label">
+            Paris-klassifikation
+            <span className="field-label-optional"> — valfri</span>
+          </label>
+          <div className="paris-grid">
+            {PARIS_OPTIONS.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => setParis(paris === opt.id ? undefined : opt.id)}
+                className={`paris-tile ${paris === opt.id ? `paris-tile--active paris-tile--active-${procedure}` : ''}`}
+                title={opt.description}
+              >
+                <Image
+                  src={opt.file}
+                  alt={opt.description}
+                  width={120}
+                  height={65}
+                  className="paris-tile-img"
+                />
+                <span className="paris-tile-label">{opt.label}</span>
               </button>
             ))}
           </div>

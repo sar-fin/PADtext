@@ -431,6 +431,74 @@ body {
   border-radius: var(--radius-md);
 }
 
+.field-label-optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--slate-400);
+  font-size: 0.72rem;
+}
+
+/* ── Paris classification picker ─────────────── */
+
+.paris-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.paris-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.25rem 0.4rem;
+  border: 2px solid var(--slate-200);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  font-family: 'DM Mono', monospace;
+}
+
+.paris-tile:hover {
+  border-color: var(--slate-400);
+  background: var(--slate-50);
+}
+
+.paris-tile-img {
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.paris-tile-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--slate-600);
+  line-height: 1;
+}
+
+.paris-tile--active {
+  border-color: var(--teal-500);
+  background: var(--teal-50);
+}
+
+.paris-tile--active .paris-tile-label {
+  color: var(--teal-700);
+}
+
+.paris-tile--active-gastroskopi {
+  border-color: var(--amber-500);
+  background: var(--amber-50);
+}
+
+.paris-tile--active-gastroskopi .paris-tile-label {
+  color: var(--amber-700);
+}
+
 .size-row {
   display: flex;
   gap: 1.25rem;

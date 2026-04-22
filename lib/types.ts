@@ -6,7 +6,19 @@ export type SpecimenType =
 
 export type PolypMorphology =
   | 'SSL'
-  | 'Adenom';
+  | 'Adenom'
+  | 'HP';
+
+export type ParisClassification =
+  | 'Ip'
+  | 'Isp'
+  | 'Is'
+  | '0-IIa'
+  | '0-IIa+c'
+  | '0-IIa+Is'
+  | '0-IIb'
+  | '0-IIc'
+  | '0-III';
 
 export interface UceisScore {
   vascular: 0 | 1 | 2;
@@ -16,6 +28,7 @@ export interface UceisScore {
 
 export interface PolypDescription {
   morphology: PolypMorphology;
+  paris?: ParisClassification;
   sizeMin: number;
   sizeMax?: number;
   count: number;
