@@ -14,10 +14,10 @@ export function generateProcedureText(
   }
 
   if (state.findings.length > 0) {
-    const findStr = state.findings.join(', ').toLowerCase();
-    parts.push(`Makroskopiska fynd: ${findStr}.`);
+    const findStr = state.findings.join(', ');
+    parts.push(`${findStr}.`);
   } else if (state.indications.length > 0) {
-    parts.push('Makroskopiska fynd: i övrigt normal slemhinna.');
+    parts.push('I övrigt normal slemhinna.');
   }
 
   if (state.uceis) {

@@ -50,6 +50,8 @@ export const MACROSCOPIC_FINDINGS: Record<ProcedureType, string[]> = {
   ],
   koloskopi: [
     'Normal slemhinna',
+    'Inflammation',
+    'Sämre kärlteckning',
     'Divertiklar',
     'Hemorrojder',
     'Erosioner',
