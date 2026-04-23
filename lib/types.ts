@@ -7,7 +7,7 @@ export type SpecimenType =
 export type PolypMorphology =
   | 'SSL'
   | 'Adenom'
-  | 'HP';
+  | 'Hyperplastisk';
 
 export type ParisClassification =
   | 'Ip'

@@ -191,7 +191,7 @@ export const SPECIMEN_TYPES: SpecimenType[] = [
 export const POLYP_MORPHOLOGIES: PolypMorphology[] = [
   'SSL',
   'Adenom',
-  'HP',
+  'Hyperplastisk',
 ];
 
 export interface ParisOption {

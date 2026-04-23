@@ -10,7 +10,7 @@ export function generateProcedureText(
 
   if (state.indications.length > 0) {
     const indStr = state.indications.join(', ').toLowerCase();
-    parts.push(`${label} utförd på indikation ${indStr}.`);
+    parts.push(`${label} pga ${indStr}.`);
   }
 
   if (state.findings.length > 0) {
