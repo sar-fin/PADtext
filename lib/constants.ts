@@ -94,7 +94,18 @@ export const ANATOMICAL_SEGMENTS: Record<ProcedureType, string[]> = {
   ],
 };
 
-/* ── Paketbiopsier ────────────────────────── */
+/* ── Fynd som kräver lokalisation (koloskopi) ─ */
+export const LOCALIZABLE_FINDINGS = new Set([
+  'Inflammation',
+  'Sämre kärlteckning',
+  'Divertiklar',
+  'Erosioner',
+  'Ulcerationer',
+  'Angiodysplasier',
+  'Tumör',
+]);
+
+
 export interface PresetJar {
   anatomicalSegment: string;
   specimenType: SpecimenType;

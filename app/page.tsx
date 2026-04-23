@@ -11,7 +11,7 @@ import JarList from '@/components/JarList';
 import PreviewPanel from '@/components/PreviewPanel';
 import PresetPackages from '@/components/PresetPackages';
 
-const emptyProcedure = { indications: [], findings: [], freeText: '' };
+const emptyProcedure = { indications: [], findings: [], findingLocations: {}, freeText: '' };
 
 const initialState: RemissState = {
   activeProcedures: ['koloskopi'],
@@ -39,13 +39,44 @@ export default function Home() {
     (procedure: ProcedureType, key: 'indications' | 'findings', item: string) => {
       setState((prev) => {
         const arr = prev.procedures[procedure][key];
+        const isRemoving = arr.includes(item);
+        const next = isRemoving ? arr.filter((x) => x !== item) : [...arr, item];
+        // Clear location when finding is deselected
+        const findingLocations = { ...prev.procedures[procedure].findingLocations };
+        if (key === 'findings' && isRemoving) delete findingLocations[item];
         return {
           ...prev,
           procedures: {
             ...prev.procedures,
             [procedure]: {
               ...prev.procedures[procedure],
-              [key]: arr.includes(item) ? arr.filter((x) => x !== item) : [...arr, item],
+              [key]: next,
+              findingLocations,
+            },
+          },
+        };
+      });
+    },
+    [],
+  );
+
+  const toggleFindingLocation = useCallback(
+    (procedure: ProcedureType, finding: string, segment: string) => {
+      setState((prev) => {
+        const current = prev.procedures[procedure].findingLocations[finding] ?? [];
+        const next = current.includes(segment)
+          ? current.filter((s) => s !== segment)
+          : [...current, segment];
+        return {
+          ...prev,
+          procedures: {
+            ...prev.procedures,
+            [procedure]: {
+              ...prev.procedures[procedure],
+              findingLocations: {
+                ...prev.procedures[procedure].findingLocations,
+                [finding]: next,
+              },
             },
           },
         };
@@ -149,10 +180,12 @@ export default function Home() {
               procedure={p}
               selectedIndications={state.procedures[p].indications}
               selectedFindings={state.procedures[p].findings}
+              findingLocations={state.procedures[p].findingLocations}
               freeText={state.procedures[p].freeText}
               uceis={state.procedures[p].uceis}
               onToggleIndication={(item) => toggleProcedureItem(p, 'indications', item)}
               onToggleFinding={(item) => toggleProcedureItem(p, 'findings', item)}
+              onToggleFindingLocation={(finding, segment) => toggleFindingLocation(p, finding, segment)}
               onFreeTextChange={(text) => setProcedureFreeText(p, text)}
               onUceisChange={(score) => setUceis(p, score)}
             />

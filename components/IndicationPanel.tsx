@@ -2,16 +2,18 @@
 
 import { useState } from 'react';
 import type { ProcedureType, UceisScore } from '@/lib/types';
-import { INDICATIONS, MACROSCOPIC_FINDINGS, PROCEDURE_LABELS } from '@/lib/constants';
+import { INDICATIONS, MACROSCOPIC_FINDINGS, ANATOMICAL_SEGMENTS, LOCALIZABLE_FINDINGS, PROCEDURE_LABELS } from '@/lib/constants';
 
 interface Props {
   procedure: ProcedureType;
   selectedIndications: string[];
   selectedFindings: string[];
+  findingLocations: Record<string, string[]>;
   freeText: string;
   uceis?: UceisScore;
   onToggleIndication: (item: string) => void;
   onToggleFinding: (item: string) => void;
+  onToggleFindingLocation: (finding: string, segment: string) => void;
   onFreeTextChange: (text: string) => void;
   onUceisChange: (score: UceisScore | undefined) => void;
 }
@@ -40,10 +42,12 @@ export default function IndicationPanel({
   procedure,
   selectedIndications,
   selectedFindings,
+  findingLocations,
   freeText,
   uceis,
   onToggleIndication,
   onToggleFinding,
+  onToggleFindingLocation,
   onFreeTextChange,
   onUceisChange,
 }: Props) {
@@ -66,6 +70,12 @@ export default function IndicationPanel({
   };
 
   const uceisTotal = uceis ? uceis.vascular + uceis.bleeding + uceis.erosions : 0;
+
+  // Active findings that support location selection
+  const localizableActive = selectedFindings.filter(
+    (f) => LOCALIZABLE_FINDINGS.has(f) && procedure === 'koloskopi'
+  );
+  const segments = ANATOMICAL_SEGMENTS[procedure];
 
   return (
     <section className={`panel panel--${procedure}`}>
@@ -95,6 +105,9 @@ export default function IndicationPanel({
             className={`chip ${selectedFindings.includes(item) ? `chip--active chip--active-${procedure}` : ''}`}
           >
             {item}
+            {LOCALIZABLE_FINDINGS.has(item) && procedure === 'koloskopi' && selectedFindings.includes(item) && (findingLocations[item]?.length ?? 0) > 0 && (
+              <span className="chip-loc-count">{findingLocations[item].length}</span>
+            )}
           </button>
         ))}
 
@@ -107,6 +120,28 @@ export default function IndicationPanel({
           </button>
         )}
       </div>
+
+      {/* Location sub-panel for localizable findings */}
+      {localizableActive.length > 0 && (
+        <div className="finding-loc-panel">
+          {localizableActive.map((finding) => (
+            <div key={finding} className="finding-loc-row">
+              <span className="finding-loc-label">{finding}</span>
+              <div className="chip-grid">
+                {segments.map((seg) => (
+                  <button
+                    key={seg}
+                    onClick={() => onToggleFindingLocation(finding, seg)}
+                    className={`chip chip--sm ${(findingLocations[finding] ?? []).includes(seg) ? `chip--active chip--active-${procedure}` : ''}`}
+                  >
+                    {seg}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {uceisOpen && uceis && (
         <div className="uceis-panel">

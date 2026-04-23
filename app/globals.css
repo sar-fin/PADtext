@@ -853,3 +853,49 @@ body {
 .uceis-severity--mild    { color: #6ee7b7; }
 .uceis-severity--moderate { color: #fcd34d; }
 .uceis-severity--severe  { color: #f87171; }
+
+/* ── Finding location sub-panel ──────────────── */
+
+.finding-loc-panel {
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.finding-loc-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.finding-loc-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.chip-loc-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.35rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: currentColor;
+  color: inherit;
+  opacity: 0.25;
+  /* override: show contrasting text */
+  background: rgba(255,255,255,0.25);
+  color: inherit;
+}

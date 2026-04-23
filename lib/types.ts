@@ -46,6 +46,7 @@ export interface Jar {
 export interface ProcedureState {
   indications: string[];
   findings: string[];
+  findingLocations: Record<string, string[]>;
   freeText: string;
   uceis?: UceisScore;
 }

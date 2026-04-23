@@ -1,5 +1,13 @@
 import type { RemissState, ProcedureState, ProcedureType, Jar } from './types';
-import { PROCEDURE_LABELS } from './constants';
+import { PROCEDURE_LABELS, LOCALIZABLE_FINDINGS } from './constants';
+
+function formatLocations(segments: string[]): string {
+  if (segments.length === 0) return '';
+  if (segments.length === 1) return ` i ${segments[0].toLowerCase()}`;
+  const last = segments[segments.length - 1];
+  const rest = segments.slice(0, -1);
+  return ` i ${rest.map((s) => s.toLowerCase()).join(', ')} och ${last.toLowerCase()}`;
+}
 
 export function generateProcedureText(
   type: ProcedureType,
@@ -14,7 +22,13 @@ export function generateProcedureText(
   }
 
   if (state.findings.length > 0) {
-    const findStr = state.findings.join(', ');
+    const findStr = state.findings.map((f) => {
+      const locs = state.findingLocations[f] ?? [];
+      const locSuffix = LOCALIZABLE_FINDINGS.has(f) && locs.length > 0
+        ? formatLocations(locs)
+        : '';
+      return `${f}${locSuffix}`;
+    }).join(', ');
     parts.push(`${findStr}.`);
   } else if (state.indications.length > 0) {
     parts.push('I övrigt normal slemhinna.');
