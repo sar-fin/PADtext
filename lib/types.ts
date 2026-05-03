@@ -40,7 +40,8 @@ export interface Jar {
   procedure: ProcedureType;
   anatomicalSegment: string;
   specimenType: SpecimenType;
-  polyp?: PolypDescription;
+  polyps: PolypDescription[];
+  multipleSmall: boolean;
 }
 
 export interface ProcedureState {

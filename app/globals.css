@@ -423,12 +423,90 @@ body {
 
 /* ── Polyp details ───────────────────────────── */
 
-.polyp-details {
-  margin-top: 0.75rem;
+/* ── Polyp section ───────────────────────────── */
+
+.polyp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.polyp-form {
   padding: 1rem;
-  background: var(--teal-50);
-  border: 1px solid var(--teal-200);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: var(--radius-md);
+}
+
+.polyp-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.polyp-form-title {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.polyp-remove-btn {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+
+.polyp-remove-btn:hover {
+  background: rgba(248, 113, 113, 0.2);
+  color: #f87171;
+  border-color: #f87171;
+}
+
+.polyp-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.polyp-add-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed rgba(255,255,255,0.2);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.polyp-add-btn--koloskopi:hover {
+  border-color: var(--teal-400);
+  color: var(--teal-300);
+  background: rgba(45, 212, 191, 0.06);
+}
+
+.polyp-add-btn--gastroskopi:hover {
+  border-color: var(--amber-400);
+  color: var(--amber-300);
+  background: rgba(251, 191, 36, 0.06);
 }
 
 .field-label-optional {

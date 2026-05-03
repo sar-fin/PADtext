@@ -57,18 +57,22 @@ export function generateBroadtext(state: RemissState): string {
 }
 
 export function generateJarText(jar: Jar): string {
-  const parts: string[] = [
-    `Burk ${jar.jarNumber}: ${jar.anatomicalSegment}, ${jar.specimenType.toLowerCase()}.`,
-  ];
+  const header = `Burk ${jar.jarNumber}: ${jar.anatomicalSegment}, ${jar.specimenType.toLowerCase()}.`;
+  const polypParts: string[] = [];
 
-  if (jar.polyp) {
-    const { morphology, paris, sizeMin, sizeMax, count } = jar.polyp;
+  for (const { morphology, paris, sizeMin, sizeMax, count } of jar.polyps) {
     const sizeStr = sizeMax ? `${sizeMin}–${sizeMax} mm` : `${sizeMin} mm`;
     const countStr = count > 1 ? ` (${count} st)` : '';
-    const parisStr = paris ? ` Paris ${paris}.` : '';
-    parts.push(` ${morphology} polyp${countStr}, ${sizeStr}.${parisStr}`);
+    const parisStr = paris ? `, Paris ${paris}` : '';
+    polypParts.push(`${morphology} polyp${countStr}, ${sizeStr}${parisStr}.`);
   }
 
-  return parts.join('');
+  if (jar.multipleSmall) {
+    polypParts.push('Samt flera mindre polyper.');
+  }
+
+  return polypParts.length > 0
+    ? `${header} ${polypParts.join(' ')}`
+    : header;
 }
 

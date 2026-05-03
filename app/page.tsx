@@ -110,6 +110,8 @@ export default function Home() {
         procedure: pkg.procedure,
         anatomicalSegment: pj.anatomicalSegment,
         specimenType: pj.specimenType,
+        polyps: [],
+        multipleSmall: false,
       }));
       return { ...prev, jars: [...prev.jars, ...newJars] };
     });
