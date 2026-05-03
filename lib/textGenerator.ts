@@ -31,7 +31,6 @@ export function generateProcedureText(
     }).join(', ');
     parts.push(`${findStr}.`);
   } else if (state.indications.length > 0) {
-    parts.push('I övrigt normal slemhinna.');
   }
 
   if (state.uceis) {
